@@ -1,16 +1,30 @@
 library(circlize)
 library(dplyr)
-
+library(tidyverse)
 # This file contains the code and data to replicate the plots of the figures of supplementary 2.
 
 
+# Raw Homer Output
+homer_output_control <- read_delim("Figure_Sup2/LXR_control_fdr005.txt",skip = 39,delim = "\t")
+homer_output_GW <- read_delim("Figure_Sup2/LXR_gw_fdr005.txt",skip = 39,delim = "\t")
 
 # Read input data and prepare data for plot
 bedlxr <- read.delim("Figure_Sup2/peaks lxr control.bed", header=F,col.names = c("chr","start","end"))
 bed.gw <- read.delim("Figure_Sup2/Peaks LXR Treated.bed",  header=F,col.names = c("chr","start","end"))
-bed.top.gw <-read.delim("Figure_Sup2/top10peaks_withID_LXR_GW.bed", header=F,col.names = c("chr","start","end","ID")) %>% select(-ID)
-bed.top.control <- read.delim("Figure_Sup2/LXR_top10_control.bed", header=F, col.names = c("chr","start","end","ID")) %>% select(-ID)
 
+# # deprecated MACS
+# bed.top.gw <-read.delim("Figure_Sup2/top10peaks_withID_LXR_GW.bed", header=F,col.names = c("chr","start","end","ID")) %>% select(-ID)
+# bed.top.control <- read.delim("Figure_Sup2/LXR_top10_control.bed", header=F, col.names = c("chr","start","end","ID")) %>% select(-ID)
+
+
+top10.control <- quantile(homer_output_control$`findPeaks Score`,probs = 0.9)
+top10.gw <- quantile(homer_output_GW$`findPeaks Score`,probs = 0.9)
+
+bed.top.control <- homer_output_control %>% arrange(`findPeaks Score`) %>%
+  filter(`findPeaks Score`>=top10.control) %>% select(chr,start,end) %>% as.data.frame()
+
+bed.top.gw <- homer_output_GW %>% arrange(`findPeaks Score`) %>%
+  filter(`findPeaks Score`>=top10.control) %>% select(chr,start,end) %>% as.data.frame()
 
 bed <- rbind(bedlxr,bed.gw) %>% mutate(value=c(rep(1,nrow(bedlxr)),rep(3,nrow(bed.gw))))
 
