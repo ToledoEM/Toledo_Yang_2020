@@ -1,6 +1,9 @@
 # Repository Manuscript 
 **"Srebf1 Controls Midbrain Dopaminergic Neurogenesis"**
 
-Code and data from *Toledo EM et al.* 2020 Cell Reports.
+Code and data from *Enrique M. Toledo, Shanzheng Yang, Daniel Gyllborg, Kim E. van Wijk, Indranil Sinha, Manuel Varas-Godoy, Christopher L. Grigsby, Peter Lönnerberg, Saiful Islam, Knut R. Steffensen, Sten Linnarsson, Ernest Arenas* 2020 Cell Reports.
 
 Reproducible data can be found in the folder for each figure
+
+      
+Check: http://ernestarenaslab.org/
